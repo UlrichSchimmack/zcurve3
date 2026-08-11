@@ -1,0 +1,31 @@
+Package: zcurve3
+Type: Package
+Title: Estimating Power, Publication Bias, and Effect-Size Heterogeneity from Significant Test Statistics
+Version: 3.0.0
+Authors@R: c(
+    person("Ulrich", "Schimmack", email = "ulrich.schimmack@utoronto.ca",
+           role = c("aut", "cre")),
+    person(c("František"), "Bartoš", role = "aut"),
+    person("Jerry", "Brunner", role = "aut"))
+Description: Fits a flexible, distribution-free mixture model to the significant
+    z-values reported in a literature and returns the discovery, replication,
+    and false-discovery rates implied by the observed distribution of evidence
+    (expected discovery rate, expected replication rate, false-discovery rate).
+    When effect sizes are supplied it additionally estimates the effect-size
+    distribution behind the significant results, including per-study
+    shrinkage-adjusted effects and heterogeneity, and draws a minimum-effect
+    forest plot. Extends the 'zcurve' (z-curve 2.0) approach with effect-size
+    estimation, directional and clustered analyses, and a rewritten plot.
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Imports:
+    stats,
+    graphics,
+    grDevices,
+    utils,
+    tools,
+    parallel,
+    KernSmooth
+NeedsCompilation: no
+RoxygenNote: 7.3.3
