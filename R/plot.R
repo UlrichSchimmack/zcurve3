@@ -579,9 +579,14 @@ plot.zcurve <- function(
 #' @param digits Rounding in the interval column.
 #' @param point_col,raw_col,min_effect_col Colours for the adjusted
 #'   point/interval, the observed circles, and the minimum-effect line.
-#' @param labels Descriptive row labels replacing the study id, either named by
-#'   `study_id` or one label per study in fit order. Long labels are cut at the
-#'   first `":"` and packed to whole words.
+#' @param labels Descriptive row labels replacing the study id. Supply either a
+#'   vector **named by `study_id`**, a plain vector **paired with `label_id`**,
+#'   or **one label per study in fit order**. Long labels are cut at the first
+#'   `":"` and packed to whole words. If a named vector is given but none of the
+#'   names match a `study_id`, the ids are shown and a warning is issued.
+#' @param label_id Optional vector of `study_id`s, one per `labels` entry, so you
+#'   can write `labels = titles, label_id = ids` instead of
+#'   `labels = setNames(titles, ids)`.
 #' @param label_chars Maximum label length in characters (`NULL` leaves labels
 #'   untouched).
 #' @param show_id Logical; draw a separate id column of `study_id`s.
@@ -631,6 +636,7 @@ zcurve_forest <- function(
   raw_col = "grey60",
   min_effect_col = "red3",
   labels = NULL,
+  label_id = NULL,
   label_chars = 50,
   show_id = TRUE,
   stat = c("power", "z"),
@@ -730,13 +736,29 @@ zcurve_forest <- function(
   }
 
   # Row labels. A user-supplied vector replaces the study_id / row-number
-  # column: either named by study_id, or one label per study in fit order.
+  # column. Three ways to supply it: a vector named by study_id; a plain vector
+  # of labels paired with `label_id` (the study_ids they belong to, so no
+  # setNames() gymnastics); or one label per study in fit order.
+  if (!is.null(label_id)) {
+    if (is.null(labels) || length(label_id) != length(labels)) {
+      stop("label_id must give one study_id per label (same length as labels).")
+    }
+    labels <- stats::setNames(as.character(labels), as.character(label_id))
+  }
   if (is.null(labels)) {
     forest_data$label <- as.character(forest_data$study_id)
   } else if (!is.null(names(labels))) {
     matched <- as.character(labels)[
       match(as.character(forest_data$study_id), names(labels))
     ]
+    if (all(is.na(matched))) {
+      warning(
+        "labels: none of the names match study_id, so study ids are shown ",
+        "instead. Key labels by study_id -- labels = setNames(titles, ids) ",
+        "(values are the labels, NAMES are the ids), or pass ",
+        "labels = titles, label_id = ids.", call. = FALSE
+      )
+    }
     forest_data$label <- ifelse(
       is.na(matched), as.character(forest_data$study_id), matched
     )
@@ -744,8 +766,9 @@ zcurve_forest <- function(
     forest_data$label <- as.character(labels)
   } else {
     stop(
-      "labels must be named by study_id or have one entry per study (length ",
-      nrow(forest_data), ", the number of studies fit with yi/sei)."
+      "labels must be named by study_id, paired with label_id, or have one ",
+      "entry per study (length ", nrow(forest_data),
+      ", the number of studies fit with yi/sei)."
     )
   }
 

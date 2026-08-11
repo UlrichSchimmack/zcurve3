@@ -20,6 +20,7 @@ zcurve_forest(
   raw_col = "grey60",
   min_effect_col = "red3",
   labels = NULL,
+  label_id = NULL,
   label_chars = 50,
   show_id = TRUE,
   stat = c("power", "z"),
@@ -63,9 +64,15 @@ lies in \verb{[es_lb_min, es_lb_max]}.}
 \item{point_col, raw_col, min_effect_col}{Colours for the adjusted
 point/interval, the observed circles, and the minimum-effect line.}
 
-\item{labels}{Descriptive row labels replacing the study id, either named by
-\code{study_id} or one label per study in fit order. Long labels are cut at the
-first \code{":"} and packed to whole words.}
+\item{labels}{Descriptive row labels replacing the study id. Supply either a
+vector \strong{named by \code{study_id}}, a plain vector \strong{paired with \code{label_id}},
+or \strong{one label per study in fit order}. Long labels are cut at the first
+\code{":"} and packed to whole words. If a named vector is given but none of the
+names match a \code{study_id}, the ids are shown and a warning is issued.}
+
+\item{label_id}{Optional vector of \code{study_id}s, one per \code{labels} entry, so you
+can write \verb{labels = titles, label_id = ids} instead of
+\code{labels = setNames(titles, ids)}.}
 
 \item{label_chars}{Maximum label length in characters (\code{NULL} leaves labels
 untouched).}

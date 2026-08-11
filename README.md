@@ -203,7 +203,8 @@ Format is taken from the extension (`png`, `jpeg`, `tiff`, `pdf`, `svg`).
 
 | Argument | Default | Effect |
 | --- | --- | --- |
-| `labels` | study id | Descriptive row labels for the Study column. Either **named by `study_id`** or **one label per study in fit order**. Long labels are cut at the first `":"` and packed to whole words within `label_chars`. |
+| `labels` | study id | Descriptive row labels for the Study column: **named by `study_id`**, **paired with `label_id`**, or **one label per study in fit order**. Long labels are cut at the first `":"` and packed to whole words within `label_chars`. |
+| `label_id` | `NULL` | Optional `study_id`s, one per `labels` entry, so you can write `labels = titles, label_id = ids` instead of `setNames(titles, ids)`. |
 | `label_chars` | `50` | Maximum label length in characters (`NULL` = untouched). |
 | `stat` | `"power"` | Statistic shown beside each effect: `"power"` (adjusted replication probability, integer %) or `"z"` (observed z). |
 | `z_min` | `4` | Show only studies with \|z\| > `z_min`. |
