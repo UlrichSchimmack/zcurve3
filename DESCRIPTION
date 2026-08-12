@@ -27,5 +27,8 @@ Imports:
     tools,
     parallel,
     KernSmooth
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
 NeedsCompilation: no
 RoxygenNote: 7.3.3

@@ -5,6 +5,10 @@ from published significant test statistics.
 
 *Ulrich Schimmack, František Bartoš, Jerry Brunner*
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/UlrichSchimmack/zcurve3/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/UlrichSchimmack/zcurve3/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 z-curve fits a flexible, distribution-free mixture model to the significant
 z-values reported in a literature and returns the discovery, replication, and
 false-discovery rates implied by the observed distribution of evidence — and,
