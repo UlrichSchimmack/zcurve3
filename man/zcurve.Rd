@@ -147,9 +147,32 @@ Supply exactly one consistent combination of test statistics via \code{zval},
 others and are \strong{required} for the effect-size table and the forest plot.
 }
 \examples{
+# --- power only, from z-values ---
 z <- abs(rnorm(2000, mean = 2.5))
-fit <- zcurve(zval = z, show_plot = FALSE)
-fit
+summary(zcurve(zval = z, show_plot = FALSE))
+
+# --- power AND effect sizes, from a real (small, unreliable) literature ---
+# 17 elderly-priming studies -- the original Bargh et al. (1996) experiments
+# and later replications -- of which only 6 are significant.
+data(elderly_priming)
+head(elderly_priming)
+
+# `min_int = 5` lowers the default minimum of 20 significant tests so this
+# small set can be fit; the bootstrap is off here to keep the example fast.
+fit <- zcurve(yi = elderly_priming$d, sei = elderly_priming$se,
+              min_int = 5, show_plot = FALSE)
+summary(fit)          # ODR / EDR / ERR / FDR, effect sizes, prediction interval
+
+plot(fit)             # draw (or re-draw) the fitted z-curve
+
+\donttest{
+# A bootstrap adds confidence intervals and unlocks the minimum-effect forest
+# plot of shrinkage-adjusted per-study effects:
+fit_b <- zcurve(yi = elderly_priming$d, sei = elderly_priming$se,
+                min_int = 5, boot_iter = 100, show_plot = FALSE,
+                control = zcurve_control(parallel = FALSE))
+zcurve_forest(fit_b, labels = elderly_priming$study, z_min = 0, es_lb_min = 0)
+}
 }
 \seealso{
 \code{\link[=zcurve_control]{zcurve_control()}}, \code{\link[=zcurve_forest]{zcurve_forest()}}, \code{\link[=plot.zcurve]{plot.zcurve()}}
